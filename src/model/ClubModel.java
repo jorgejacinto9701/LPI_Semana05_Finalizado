@@ -4,14 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.logging.Logger;
 
-import entidad.Campeonato;
+import entidad.Club;
 import util.MySqlDBConexion;
 
-public class CampeonatoModel {
+public class ClubModel {
 
-	private static Logger log = Logger.getLogger(CampeonatoModel.class.getName());
+	private static Logger log = Logger.getLogger(ClubModel.class.getName());
 	
-	public int insertaCampeonato(Campeonato obj) {
+	public int insertaClub(Club obj) {
 		int salida = -1;
 		Connection conn = null;
 		PreparedStatement pstm = null;
@@ -20,12 +20,12 @@ public class CampeonatoModel {
 			conn = MySqlDBConexion.getConexion();
 			
 			//2 Se prepara el SQL
-			String sql = "insert into campeonato value(null,?,?,curtime(),?)";
+			String sql = "insert into club value(null,?,?,curtime(),?,?)";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, obj.getNombre());
-			pstm.setInt(2, obj.getAnnio());
+			pstm.setDate(2, obj.getFechaCreacion());
 			pstm.setInt(3, obj.getEstado());
-						
+			pstm.setInt(4, obj.getPais().getIdPais());
 			log.info(">>> " + pstm);
 			
 			//3 Ejecutamos a la base de datos
@@ -41,5 +41,4 @@ public class CampeonatoModel {
 		}
 		return salida;
 	}
-	
 }
